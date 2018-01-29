@@ -58,7 +58,7 @@ dkms.conf
 *.lst
 
 # SCons db
-.sconsign.dblite
+*.sconsign.dblite
 
 # Python
 *.pyc
