@@ -229,31 +229,28 @@ class paddlemodel:
 
     def get_speed_and_position(self):
         try:
-            angle = self.get_raw_angle();
-            # print angle
+            angle = self.get_raw_angle(); # Read time and angle from pic24
             time = self.get_micros();
         except TypeError:
             print "Missed one speed reading"
             return 0
         else:
-            self.delta_t = self.update_prog_time(time)
+            self.delta_t = self.update_prog_time(time) # update python program time
             prev_position = self.raw_position
-            # print prev_position
+
+            # Calculate absolute position
             if (abs(angle - self.angle) < 2**13): # normal
                 self.raw_position = ((self.raw_position >> 14) << 14) + angle
-                # print 'normal'
             elif (angle < self.angle):          # rollover
                 self.raw_position = ((self.raw_position >> 14) << 14) + 0x4000 + angle
-                # print 'rollover'
             else:                               # rollunder
                 self.raw_position = ((self.raw_position >> 14) << 14) - 0x4000 + angle
-                # print 'rollunder'
 
+            # Calculate delta angle
             self.angle = angle
             self.delta_a = self.raw_position - prev_position;
 
-            # print self.raw_position
-
+            # Calculate speed (w/ moving average)
             self.speed = 0.9 * self.speed + 0.1 * (float(self.delta_a) / self.delta_t)
-            # print self.speed
+
             return (self.speed, self.raw_position - self.position_offset)
