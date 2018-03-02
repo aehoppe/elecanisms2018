@@ -349,14 +349,14 @@ def log_data(dev, writer): # Daemon function that will log data
 if __name__=='__main__':
     # run_test();
 
-    gui = paddlecontrolgui()
+    gui = paddletestgui()
     gui.root.mainloop()
 
     # control_thread = threading.Thread(target=update_control, args=(control,)) # Set up daemon thread to run controller
     # control_thread.setDaemon(True)
     # control_thread.start()
 
-    time.sleep(2)
+    # time.sleep(2)
 
     # control.target = control.position + 900 # Step functio
     while True:
